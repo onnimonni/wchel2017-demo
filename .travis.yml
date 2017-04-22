@@ -57,4 +57,11 @@ script:
   - curl -i localhost:12000 | grep 200
 
   # Copy all files to production using our private key
-  - rsync -e "ssh -i wordpress-rsa" web --delete --exclude wp-content/uploads $PRODUCTION_SERVER_USER@$PRODUCTION_SERVER_IP
+  - rsync -e "ssh -i wordpress-rsa" web --delete --exclude wp-content/uploads web $PRODUCTION_SERVER_USER@$PRODUCTION_SERVER_IP:/var/www/html/
+
+
+
+
+
+
+
