@@ -10,6 +10,9 @@ notifications:
   on_success: never
   on_failure: change
 
+# add PRODUCTION_SERVER_USER and PRODUCTION_SERVER_IP env to our context
+secure: "qPNX5bgHcPWGwbHwho1mfLficILnzYxLaeRdMGEuLMZzAdnUMzibSJINw0H4QXZ10oNAKoOJT103QRABWJQJS8vJRjYlceWRoRa9jyDmgJXTXi227/fdAJgFJO1sljljRif5a+XzGvYz3+ZumhSe/RKLnjytS75hB8FtHJMX8YdZaEy20x4QqYiS4agzSxeLbO9jXW3jqyKSFMy+6+JHNMPzeZ8jqy4wwR8MQspZioarEk3KNi+rFnIFFqVm5uEcZOHhw3VreVp7izR3xBEZS438rLIOyHGm33xOoLdUEovbJf2pY1iky1aLP47wGTmj6SbOLsHk/DcR8DGTKXEUhv8p6xaERccMuh/LUmk/u0ulKIrtO9k3FrNN+ME/4kzh7aGXq4Th7evvVUeig7K2M0hoRh4x23vGioA5ZfSKs6Jupr6JdZYTbpp9HEeIXmxHW3+2BotYE0Zozgeb3VicKpldmF1R/27sLb4tVTychCvc0eafLdxyZXPZA78oQfQQIPgiEBJGg9a6brqM6GWmLN166PuVCe0mxk2CAaRpwP8AbHYHE/xlvtKvTg3Kyg13KdlTq+Du+x49l7qdS+MfMIYEpQtL6EdemQqM6xiNickMRehB/LRTw33ifJxjHmRlj9LD1jlwLmMrNIL6u/HGz0uN9m8jY9BUhpQ6GeRrjoU="
+
 php:
   - 7.0
 
@@ -17,6 +20,10 @@ env:
   - WP_PROJECT_TYPE=plugin WP_VERSION=latest WP_MULTISITE=0 WP_TEST_URL=http://localhost:12000 WP_TEST_USER=test WP_TEST_USER_PASS=test
 
 before_script:
+  # Encrypt ssh deploy key
+  # This was done by: $ travis encrypt-file wordpress-rsa
+  - openssl aes-256-cbc -K $encrypted_d54f28eb6d20_key -iv $encrypted_d54f28eb6d20_iv -in wordpress-rsa.enc -out wordpress-rsa -d
+
   # Install composer packages before trying to activate themes or plugins
   - composer install
 
@@ -49,6 +56,5 @@ script:
   # Check that WP returns 200
   - curl -i localhost:12000 | grep 200
 
-  - 
-
-#  - cd wp-tests/spec && bundle exec rspec test.rb
+  # Copy all files to production
+  - rsync web --delete --exclude wp-content/uploads $PRODUCTION_SERVER_USER@$PRODUCTION_SERVER_IP
