@@ -11,7 +11,7 @@ notifications:
   on_failure: change
 
 # add PRODUCTION_SERVER_USER and PRODUCTION_SERVER_IP env to our context
-secure: "qPNX5bgHcPWGwbHwho1mfLficILnzYxLaeRdMGEuLMZzAdnUMzibSJINw0H4QXZ10oNAKoOJT103QRABWJQJS8vJRjYlceWRoRa9jyDmgJXTXi227/fdAJgFJO1sljljRif5a+XzGvYz3+ZumhSe/RKLnjytS75hB8FtHJMX8YdZaEy20x4QqYiS4agzSxeLbO9jXW3jqyKSFMy+6+JHNMPzeZ8jqy4wwR8MQspZioarEk3KNi+rFnIFFqVm5uEcZOHhw3VreVp7izR3xBEZS438rLIOyHGm33xOoLdUEovbJf2pY1iky1aLP47wGTmj6SbOLsHk/DcR8DGTKXEUhv8p6xaERccMuh/LUmk/u0ulKIrtO9k3FrNN+ME/4kzh7aGXq4Th7evvVUeig7K2M0hoRh4x23vGioA5ZfSKs6Jupr6JdZYTbpp9HEeIXmxHW3+2BotYE0Zozgeb3VicKpldmF1R/27sLb4tVTychCvc0eafLdxyZXPZA78oQfQQIPgiEBJGg9a6brqM6GWmLN166PuVCe0mxk2CAaRpwP8AbHYHE/xlvtKvTg3Kyg13KdlTq+Du+x49l7qdS+MfMIYEpQtL6EdemQqM6xiNickMRehB/LRTw33ifJxjHmRlj9LD1jlwLmMrNIL6u/HGz0uN9m8jY9BUhpQ6GeRrjoU="
+secure: "Mw5fEyi2PnLV7lU9ljzkDgX9kb0MYWR9cqhQWtRy8OZowEpszFHaN+1/N05XfPoJ/rk4h9qIepldyWvTnxCQYfuJcZnQEF+98MHNSrSIEsatgpLuOAX0u62REKgHIvtnoqd6/rDDLbKLbu6WfSjksZ+FvTbXlYNEk0D5rTpzO/g93Dn3TlE+nNTXOR6NLsrF2jsdvXTOJYrew3nZMKKlZaXcHZXJ2orbIqa0H15xDLb66QEMEGAFYJUpnJxWfkWlQEM/+EImSjYLvoSjMxYrC3pqQcKxyZqIYiLRk21whU6OhKlmmAOFQSEkI8tcQVTeW+7/2qbfUTUGUe2QllaI+s/Lgrlb1+nlTNPSpefh4/EmzR4oZUWhdw4xfg43KVFXcvFZ49I1dPPL8S89cMY70Iy4hitXrfZydZjl/lkyVXFCKaWZNQhOvIJ36WjnKr9WmHJ40bcHQGOG0ei6pHIDinZfPjZadJO2Fxe6enOFMYY9Vbvu9fHG2gZ9dKPLC0P3Auz8oTzFzhMVDmAgdVlFE5GwGLpVZAqDvbvXbQkwSPDoQcScAet0BgHPRrkXyCE2AyEAp4ZV2rGhP6zjQuJIGQ0mS8699HHFyr16TEJZgM7bM204+gTPPjSZgFdZzeUJaaOuT5YEeOp4lsnVsUz+wxeTbX56M+Z6Nb7i49W/WT8="
 
 php:
   - 7.0
@@ -56,5 +56,5 @@ script:
   # Check that WP returns 200
   - curl -i localhost:12000 | grep 200
 
-  # Copy all files to production
-  - rsync web --delete --exclude wp-content/uploads $PRODUCTION_SERVER_USER@$PRODUCTION_SERVER_IP
+  # Copy all files to production using our private key
+  - rsync -e "ssh -i wordpress-rsa" web --delete --exclude wp-content/uploads $PRODUCTION_SERVER_USER@$PRODUCTION_SERVER_IP
