@@ -3,3 +3,6 @@ web/wp
 
 # Ignore plugins from git
 web/app/plugins
+
+# Ignore composer packages from git
+vendor
