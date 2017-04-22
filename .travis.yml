@@ -19,7 +19,6 @@ before_script:
 
   # Start web server
   - cp wp-tests/lib/router.php web/router.php
-  - php -S 0.0.0.0:12000 router.php &
 
   # Convert bedrock folder layout to traditional wp layout
   - cp -r web/wp/* web/
@@ -28,7 +27,13 @@ before_script:
   # Delete duplicate content
   - rm -r web/{wp,app}
 
+  - cd web
+  - php -S 0.0.0.0:12000 router.php &
+
   - curl -i localhost:12000
+
+  # Setup database
+  
 
 #script:
 #  - cd wp-tests/spec && bundle exec rspec test.rb
