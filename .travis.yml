@@ -3,6 +3,9 @@ sudo: false
 
 language: php
 
+services:
+  - mysql
+
 notifications:
   on_success: never
   on_failure: change
@@ -27,13 +30,22 @@ before_script:
   # Delete duplicate content
   - rm -r web/{wp,app}
 
+  # Start wordpress
   - cd web
   - php -S 0.0.0.0:12000 router.php &
-
-  - curl -i localhost:12000
+  - cd ..
 
   # Setup database
-  
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress;'
+  - mysql -e 'CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '25911661b5cd8309fad14674d9382d4d045d821334f93353';'
+  - mysql -e 'GRANT ALL PRIVILEGES ON wordpress . * TO 'wordpress'@'localhost';'
+  - mysql -e 'FLUSH PRIVILEGES;'
+
+  # Install WP-CLI and wordpress database
+  - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar wp-cli.phar
+  - php wp-cli.phar core install --url=$WP_TEST_URL --title='Test' --admin_user=$WP_TEST_USER --admin_password=$WP_TEST_USER_PASS --admin_email="$WP_TEST_USER@wordpress.dev"
+
+  - curl -i localhost:12000
 
 #script:
 #  - cd wp-tests/spec && bundle exec rspec test.rb
