@@ -17,7 +17,18 @@ before_script:
   # Install composer packages before trying to activate themes or plugins
   - composer install
 
-  - bash wp-tests/bin/install-wp-tests.sh test root '' localhost $WP_VERSION
+  # Start web server
+  - cp wp-tests/lib/router.php web/router.php
+  - php -S 0.0.0.0:12000 router.php &
 
-script:
-  - cd wp-tests/spec && bundle exec rspec test.rb
+  # Convert bedrock folder layout to traditional wp layout
+  - cp -r web/wp/* web/
+  - cp -r web/app web/wp-content
+
+  # Delete duplicate content
+  - rm -r web/{wp,app}
+
+  - curl -i localhost:12000
+
+#script:
+#  - cd wp-tests/spec && bundle exec rspec test.rb
