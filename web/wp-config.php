@@ -20,22 +20,43 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'wordpress');
+if ( getenv('WP_ENV') == 'testing' ) {
+	define('DB_NAME', 'wordpress');
 
-/** MySQL database username */
-define('DB_USER', 'wordpress');
+	/** MySQL database username */
+	define('DB_USER', 'root');
 
-/** MySQL database password */
-define('DB_PASSWORD', '25911661b5cd8309fad14674d9382d4d045d821334f93353');
+	/** MySQL database password */
+	define('DB_PASSWORD', '');
 
-/** MySQL hostname */
-define('DB_HOST', 'localhost');
+	/** MySQL hostname */
+	define('DB_HOST', 'localhost');
 
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+	/** Database Charset to use in creating database tables. */
+	define('DB_CHARSET', 'utf8');
 
-/** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
+	/** The Database Collate type. Don't change this if in doubt. */
+	define('DB_COLLATE', '');
+
+} else {
+	define('DB_NAME', 'wordpress');
+
+	/** MySQL database username */
+	define('DB_USER', 'wordpress');
+
+	/** MySQL database password */
+	define('DB_PASSWORD', '25911661b5cd8309fad14674d9382d4d045d821334f93353');
+
+	/** MySQL hostname */
+	define('DB_HOST', 'localhost');
+
+	/** Database Charset to use in creating database tables. */
+	define('DB_CHARSET', 'utf8');
+
+	/** The Database Collate type. Don't change this if in doubt. */
+	define('DB_COLLATE', '');
+}
+
 
 /**#@+
  * Authentication Unique Keys and Salts.

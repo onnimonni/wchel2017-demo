@@ -18,6 +18,7 @@ php:
 
 env:
   - WP_PROJECT_TYPE=plugin WP_VERSION=latest WP_MULTISITE=0 WP_TEST_URL=http://localhost:12000 WP_TEST_USER=test WP_TEST_USER_PASS=test
+  - WP_ENV=testing
 
 before_script:
   # Encrypt ssh deploy key
@@ -44,9 +45,6 @@ before_script:
 
   # Setup database
   - mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress;'
-  - mysql -e "CREATE USER 'wordpress'@'localhost' IDENTIFIED BY '25911661b5cd8309fad14674d9382d4d045d821334f93353';"
-  - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'wordpress'@'localhost';"
-  - mysql -e 'FLUSH PRIVILEGES;'
 
   # Install WP-CLI and wordpress database
   - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar wp-cli.phar
