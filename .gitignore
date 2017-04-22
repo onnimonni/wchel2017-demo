@@ -1,0 +1,5 @@
+# Ignore WP core from git
+web/wp
+
+# Ignore plugins from git
+web/app/plugins
